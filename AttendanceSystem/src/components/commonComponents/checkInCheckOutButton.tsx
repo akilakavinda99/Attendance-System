@@ -1,10 +1,14 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import React from 'react';
 import {theme} from '../../theme/theme';
 import {scale} from 'react-native-size-matters';
-import firestore from '@react-native-firebase/firestore';
-import {FIREBASE_CONSTANTS} from '../../firebase/firebaseConstants';
 import {isCheckedInType} from '../../types/commonTypes';
+import {useSelector} from 'react-redux';
 
 const CheckInCheckOutButton = ({
   isCheckedIn,
@@ -12,14 +16,20 @@ const CheckInCheckOutButton = ({
   checkOutFunction,
   isLoading,
 }: isCheckedInType) => {
+  const loading = useSelector(state => state.userDataReducer.loading);
+
   return (
     <TouchableOpacity
-      disabled={isLoading}
+      disabled={loading}
       style={styles.container}
       onPress={isCheckedIn ? checkOutFunction : checkInFunction}>
-      <Text style={styles.buttonText}>
-        {isCheckedIn ? 'Check Out' : 'Check In'}
-      </Text>
+      {loading ? (
+        <ActivityIndicator size="small" color={theme.colors.white} />
+      ) : (
+        <Text style={styles.buttonText}>
+          {isCheckedIn ? 'Check Out' : 'Check In'}
+        </Text>
+      )}
     </TouchableOpacity>
   );
 };

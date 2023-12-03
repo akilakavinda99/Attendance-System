@@ -1,17 +1,17 @@
-import {Text, View} from 'react-native';
+import {View, Text} from 'react-native';
 import React from 'react';
 import {workkedHoursStyles} from './styles';
 import DetailsCard from '../../components/screenBasedComponents/workedHoursScreenComp/detailsCard';
+import {getTimeOfDay} from '../../utils/getTimeOfDay';
 
 const WorkedHoursScreen = () => {
   return (
     <View style={workkedHoursStyles.container}>
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          flex: 1,
-        }}>
+      <Text
+        style={
+          workkedHoursStyles.greetingText
+        }>{`Good ${getTimeOfDay()} John`}</Text>
+      <View style={workkedHoursStyles.detailCardWrapper}>
         <DetailsCard />
       </View>
     </View>

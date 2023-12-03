@@ -1,8 +1,8 @@
 import firestore from '@react-native-firebase/firestore';
-import {GetUserDataType} from './firebaseTypes';
 import {FIREBASE_CONSTANTS} from './firebaseConstants';
 import {errorToast} from '../utils/toastMessages';
 import {isToday} from 'date-fns';
+
 export const getUserData = async (documentId: string) => {
   try {
     const user = await firestore()
@@ -17,15 +17,15 @@ export const getUserData = async (documentId: string) => {
 
 export const userCheckIn = async (documentId: string) => {
   const today = new Date();
+
   const userRef = firestore()
     .collection(FIREBASE_CONSTANTS.USERS_COLLECTION)
     .doc(FIREBASE_CONSTANTS.USER_ID);
-  const todayDateString = today.toISOString().split('T')[0];
-  console.log('todayDateString', todayDateString);
+
   const userData = await getUserData(documentId);
-  console.log('userData', userData);
+
   const attendances = userData.attendances || [];
-  console.log('attendances', attendances);
+
   const todayAttendanceIndex = attendances.findIndex(entry => {
     const entryDate = entry.date.toDate(); // Convert Firestore Timestamp to JavaScript Date
     return isToday(entryDate); // Check if the entry date is today
@@ -55,11 +55,9 @@ export const userCheckIn = async (documentId: string) => {
   }
 
   await userRef.update({
-    isCheckedIn: true, // Update your isCheckedIn field if needed
+    isCheckedIn: true,
     attendances: attendances,
   });
-
-  console.log('todayAttendanceIndex', todayAttendanceIndex);
 };
 
 export const userCheckOut = async (documentId: string) => {
@@ -95,7 +93,6 @@ export const userCheckOut = async (documentId: string) => {
             isCheckedIn: false,
             attendances: attendances,
           });
-          console.log('User checked out successfully!');
         } else {
           errorToast('Wait at least a minute to checkout');
         }
@@ -110,7 +107,6 @@ export const userCheckOut = async (documentId: string) => {
   }
 };
 
-// const checkIn = () => {
 //   firestore()
 //     .collection('Users')
 //     .doc(FIREBASE_CONSTANTS.USER_ID)

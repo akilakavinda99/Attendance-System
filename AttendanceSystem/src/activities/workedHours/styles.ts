@@ -17,4 +17,15 @@ export const workkedHoursStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  greetingText: {
+    fontSize: 25,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    marginTop: 30,
+  },
+  detailCardWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
 });

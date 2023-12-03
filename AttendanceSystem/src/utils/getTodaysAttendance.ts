@@ -5,6 +5,5 @@ export const getTodaysAttendance = attendanceData => {
     return isToday(entryDate); // Check if the entry date is today
   });
 
-  console.log('Sdsds', todayAttendance);
   return todayAttendance[0]?.attendanceList;
 };

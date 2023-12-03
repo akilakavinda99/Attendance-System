@@ -16,5 +16,6 @@ export const theme = {
   },
   gradientColors: {
     dayGradient: ['#78D2F6', '#8ED6F4', '#61BCFF'],
+    nightGradient: ['#494DC6', '#494DC6', '#112584'],
   },
 };

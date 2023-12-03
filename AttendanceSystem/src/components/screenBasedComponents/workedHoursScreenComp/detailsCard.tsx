@@ -4,11 +4,12 @@ import LinearGradient from 'react-native-linear-gradient';
 import {scale} from 'react-native-size-matters';
 import {theme} from '../../../theme/theme';
 import CheckInCheckOutButton from '../../commonComponents/checkInCheckOutButton';
-import {DaySvg} from '../../../assets/svgs';
+import {DaySvg, NightSvg} from '../../../assets/svgs';
 import {useSelector} from 'react-redux';
 import {checkInHandler} from '../../../utils/checkInHandler';
 import {checkOutHandler} from '../../../utils/checkOutHandler';
 import {calculateTotalWorkedHours} from '../../../utils/calculateWorkedHours';
+import {getTimeOfDay} from '../../../utils/getTimeOfDay';
 
 const DetailsCard = () => {
   const isCheckedIn = useSelector(state => state.userDataReducer.isCheckedIn);
@@ -25,12 +26,20 @@ const DetailsCard = () => {
     setRemainingMinutes(formattedMinutes);
   }, [attendances]);
 
+  const timeOfDay = getTimeOfDay();
+
   return (
     <LinearGradient
-      colors={theme.gradientColors.dayGradient}
+      colors={
+        timeOfDay == 'Morning'
+          ? theme.gradientColors.dayGradient
+          : theme.gradientColors.nightGradient
+      }
       style={styles.gradientStyle}>
-      <Text style={styles.checkedStatusText}>Checked - In</Text>
-      <DaySvg />
+      <Text style={styles.checkedStatusText}>
+        {isCheckedIn ? 'Checked - In' : 'Checked - Out'}
+      </Text>
+      {timeOfDay == 'Morning' ? <DaySvg /> : <NightSvg />}
       <View style={styles.rowView}>
         <Text style={styles.hoursText}>{totalHours} :</Text>
         <Text style={styles.minutesText}> {remainingMinutes}</Text>
