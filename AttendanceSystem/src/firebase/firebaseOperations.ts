@@ -97,21 +97,13 @@ export const userCheckOut = async (documentId: string) => {
           });
           console.log('User checked out successfully!');
         } else {
-          console.log(
-            'Check-out time must be at least 1 minute after check-in.',
-          );
-          errorToast(
-            'Check-out time must be at least 1 minute after check-in.',
-          );
-          // Handle the case where check-out time is not within the allowed range
+          errorToast('Wait at least a minute to checkout');
         }
       } else {
         console.log('No ongoing check-in found for today.');
-        // Handle the case where there's no ongoing check-in for today
       }
     } else {
       console.log('No check-in found for today.');
-      // Handle the case where there's no check-in for today
     }
   } catch (error) {
     console.error('Error:', error);

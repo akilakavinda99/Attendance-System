@@ -4,38 +4,22 @@ import {theme} from '../../theme/theme';
 import {scale} from 'react-native-size-matters';
 import firestore from '@react-native-firebase/firestore';
 import {FIREBASE_CONSTANTS} from '../../firebase/firebaseConstants';
+import {isCheckedInType} from '../../types/commonTypes';
 
-const CheckInCheckOutButton = () => {
-  const checkIn = () => {
-    firestore()
-      .collection('Users')
-      .doc(FIREBASE_CONSTANTS.USER_ID)
-      .set({
-        name: 'John Doe',
-        isCheckedIn: false,
-        attendances: [
-          {
-            date: new Date(),
-            attendanceList: [
-              {
-                checkIn: new Date(),
-                checkOut: null,
-              },
-            ],
-          },
-        ],
-      })
-      .then(() => {
-        console.log('User added!');
-      })
-      .catch(err => {
-        console.log('Error', err);
-      });
-  };
-
+const CheckInCheckOutButton = ({
+  isCheckedIn,
+  checkInFunction,
+  checkOutFunction,
+  isLoading,
+}: isCheckedInType) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={checkIn}>
-      <Text style={styles.buttonText}>Check In</Text>
+    <TouchableOpacity
+      disabled={isLoading}
+      style={styles.container}
+      onPress={isCheckedIn ? checkOutFunction : checkInFunction}>
+      <Text style={styles.buttonText}>
+        {isCheckedIn ? 'Check Out' : 'Check In'}
+      </Text>
     </TouchableOpacity>
   );
 };

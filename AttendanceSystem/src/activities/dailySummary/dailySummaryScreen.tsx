@@ -1,13 +1,23 @@
 import {Text, View, FlatList} from 'react-native';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {dailySummaryStyles} from './styles';
+import {useSelector} from 'react-redux';
+import {getTodaysAttendance} from '../../utils/getTodaysAttendance';
+import {formatTime} from '../../utils/formatTIme';
 
 const DailySummaryScreen = () => {
+  const attendances = useSelector(state => state.userDataReducer.attendances);
+
+  const [listData, setListData] = useState([]);
+
+  useEffect(() => {
+    const todayAttendance = getTodaysAttendance(attendances);
+    setListData(todayAttendance);
+  }, [attendances]);
   return (
     <View style={dailySummaryStyles.container}>
-      <Text>DailySummaryScreen</Text>
       <FlatList
-        data={[{key: 'a'}, {key: 'b'}]}
+        data={listData}
         ListHeaderComponent={() => (
           <>
             <View
@@ -22,9 +32,9 @@ const DailySummaryScreen = () => {
                   fontWeight: 'bold',
                   color: '#000000',
                 }}>
-                Header
+                Check-In
               </Text>
-              <Text>Header</Text>
+              <Text>Check - Out</Text>
             </View>
           </>
         )}
@@ -36,8 +46,10 @@ const DailySummaryScreen = () => {
                 justifyContent: 'space-between',
                 padding: 10,
               }}>
-              <Text>Header</Text>
-              <Text>Header</Text>
+              <Text>{formatTime(item.checkIn)}</Text>
+              <Text>
+                {item.checkOut == null ? 'Now' : formatTime(item.checkOut)}
+              </Text>
             </View>
             <View
               style={{

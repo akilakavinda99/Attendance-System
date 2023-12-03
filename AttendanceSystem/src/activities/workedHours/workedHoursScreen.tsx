@@ -6,7 +6,6 @@ import DetailsCard from '../../components/screenBasedComponents/workedHoursScree
 const WorkedHoursScreen = () => {
   return (
     <View style={workkedHoursStyles.container}>
-      <Text>WorkedHoursScreen</Text>
       <View
         style={{
           alignItems: 'center',

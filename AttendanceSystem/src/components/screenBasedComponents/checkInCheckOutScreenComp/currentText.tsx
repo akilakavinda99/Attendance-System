@@ -2,8 +2,17 @@ import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {theme} from '../../../theme/theme';
 import {scale} from 'react-native-size-matters';
-const CurrentText = () => {
-  return <Text style={styles.text}>You are currently checked out</Text>;
+import {isCheckedInType} from '../../../types/commonTypes';
+const CurrentText = ({isCheckedIn}: isCheckedInType) => {
+  return (
+    <>
+      <Text style={styles.text}>
+        {isCheckedIn
+          ? 'You are currently checked in'
+          : 'You are currently checked out'}
+      </Text>
+    </>
+  );
 };
 
 export default CurrentText;

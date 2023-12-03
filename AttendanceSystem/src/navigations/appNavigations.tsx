@@ -6,6 +6,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {DailySummaryStack} from './stacks/dailySummaryStack';
 import {WorkedHoursStack} from './stacks/workedHoursStack';
 import {navConfig} from './navigationConfigs';
+import {CalenderSvg, ClockSvg, PersonSvg} from '../assets/svgs';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,17 +16,32 @@ export const AppNavigations = () => {
       <Tab.Screen
         name={STACK_NAMES.CheckInCheckOutStack}
         component={CheckInCheckOutStack}
-        options={navConfig}
+        options={{
+          ...navConfig,
+          tabBarIcon: ({color, size, focused}) => (
+            <PersonSvg focused={focused} />
+          ),
+        }}
       />
       <Tab.Screen
         name={STACK_NAMES.WorkedHoursStack}
         component={WorkedHoursStack}
-        options={navConfig}
+        options={{
+          ...navConfig,
+          tabBarIcon: ({color, size, focused}) => (
+            <ClockSvg focused={focused} />
+          ),
+        }}
       />
       <Tab.Screen
         name={STACK_NAMES.DailySummaryStack}
         component={DailySummaryStack}
-        options={navConfig}
+        options={{
+          ...navConfig,
+          tabBarIcon: ({color, size, focused}) => (
+            <CalenderSvg focused={focused} />
+          ),
+        }}
       />
     </Tab.Navigator>
   );

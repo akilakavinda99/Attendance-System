@@ -1,5 +1,5 @@
 export const STACK_NAMES = {
-  CheckInCheckOutStack: 'CheckInCheckOutStack',
-  WorkedHoursStack: 'WorkedHoursStack',
-  DailySummaryStack: 'DailySummaryStack',
+  CheckInCheckOutStack: 'CurrentStatus',
+  WorkedHoursStack: 'WorkedHours',
+  DailySummaryStack: 'DailySummary',
 };

@@ -1,11 +1,30 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {scale} from 'react-native-size-matters';
 import {theme} from '../../../theme/theme';
 import CheckInCheckOutButton from '../../commonComponents/checkInCheckOutButton';
 import {DaySvg} from '../../../assets/svgs';
+import {useSelector} from 'react-redux';
+import {checkInHandler} from '../../../utils/checkInHandler';
+import {checkOutHandler} from '../../../utils/checkOutHandler';
+import {calculateTotalWorkedHours} from '../../../utils/calculateWorkedHours';
+
 const DetailsCard = () => {
+  const isCheckedIn = useSelector(state => state.userDataReducer.isCheckedIn);
+  const isLoading = useSelector(state => state.userDataReducer.loading);
+  const attendances = useSelector(state => state.userDataReducer.attendances);
+
+  const [totalHours, setTotalHours] = useState('');
+  const [remainingMinutes, setRemainingMinutes] = useState('');
+
+  useEffect(() => {
+    const {formattedHours, formattedMinutes} =
+      calculateTotalWorkedHours(attendances);
+    setTotalHours(formattedHours);
+    setRemainingMinutes(formattedMinutes);
+  }, [attendances]);
+
   return (
     <LinearGradient
       colors={theme.gradientColors.dayGradient}
@@ -13,11 +32,16 @@ const DetailsCard = () => {
       <Text style={styles.checkedStatusText}>Checked - In</Text>
       <DaySvg />
       <View style={styles.rowView}>
-        <Text style={styles.hoursText}>01 :</Text>
-        <Text style={styles.minutesText}> 00</Text>
+        <Text style={styles.hoursText}>{totalHours} :</Text>
+        <Text style={styles.minutesText}> {remainingMinutes}</Text>
         <Text style={styles.hrsText}> Hrs</Text>
       </View>
-      <CheckInCheckOutButton />
+      <CheckInCheckOutButton
+        isCheckedIn={isCheckedIn}
+        isLoading={isLoading}
+        checkInFunction={() => checkInHandler()}
+        checkOutFunction={() => checkOutHandler()}
+      />
     </LinearGradient>
   );
 };

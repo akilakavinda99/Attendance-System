@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Svg, {G, Path, Mask, Defs, LinearGradient, Stop} from 'react-native-svg';
+import {scale} from 'react-native-size-matters';
 /* SVGR has dropped some elements not supported by react-native-svg: filter */
 
 export function DaySvg(props: any) {
@@ -147,6 +148,54 @@ export function DaySvg(props: any) {
           <Stop offset={1} stopColor="#99C4E8" />
         </LinearGradient>
       </Defs>
+    </Svg>
+  );
+}
+
+export function CalenderSvg(props) {
+  return (
+    <Svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width={scale(24)}
+      height={scale(24)}
+      {...props}>
+      <G data-name="01 align center">
+        <Path d="M21 2h-3V0h-2v2H8V0H6v2H3a3 3 0 00-3 3v19h24V5a3 3 0 00-3-3zM2 5a1 1 0 011-1h18a1 1 0 011 1v3H2zm0 17V10h20v12z" />
+        <Path d="M15 13H17V15H15z" />
+        <Path d="M11 13H13V15H11z" />
+        <Path d="M7 13H9V15H7z" />
+        <Path d="M15 17H17V19H15z" />
+        <Path d="M11 17H13V19H11z" />
+        <Path d="M7 17H9V19H7z" />
+      </G>
+    </Svg>
+  );
+}
+
+export function PersonSvg(props) {
+  return (
+    <Svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width={scale(24)}
+      height={scale(24)}
+      {...props}>
+      <Path d="M12 12a6 6 0 10-6-6 6.006 6.006 0 006 6zm0-10a4 4 0 11-4 4 4 4 0 014-4zM12 14a9.01 9.01 0 00-9 9 1 1 0 002 0 7 7 0 0114 0 1 1 0 002 0 9.01 9.01 0 00-9-9z" />
+    </Svg>
+  );
+}
+
+export function ClockSvg(props) {
+  return (
+    <Svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width={scale(24)}
+      height={scale(24)}
+      {...props}>
+      <Path d="M12 0a12 12 0 1012 12A12.013 12.013 0 0012 0zm0 22a10 10 0 1110-10 10.011 10.011 0 01-10 10z" />
+      <Path d="M12 6a1 1 0 00-1 1v4.325l-3.371 2.112a1 1 0 001.062 1.7l3.84-2.4a1 1 0 00.469-.858V7a1 1 0 00-1-1z" />
     </Svg>
   );
 }
