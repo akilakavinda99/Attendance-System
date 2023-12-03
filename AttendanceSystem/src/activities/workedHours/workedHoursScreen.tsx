@@ -1,10 +1,20 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 import React from 'react';
+import {workkedHoursStyles} from './styles';
+import DetailsCard from '../../components/screenBasedComponents/workedHoursScreenComp/detailsCard';
 
 const WorkedHoursScreen = () => {
   return (
-    <View>
+    <View style={workkedHoursStyles.container}>
       <Text>WorkedHoursScreen</Text>
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          flex: 1,
+        }}>
+        <DetailsCard />
+      </View>
     </View>
   );
 };
