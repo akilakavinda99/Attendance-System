@@ -18,13 +18,13 @@ export const AppNavigations = () => {
         options={navConfig}
       />
       <Tab.Screen
-        name={STACK_NAMES.DailySummaryStack}
-        component={DailySummaryStack}
+        name={STACK_NAMES.WorkedHoursStack}
+        component={WorkedHoursStack}
         options={navConfig}
       />
       <Tab.Screen
-        name={STACK_NAMES.WorkedHoursStack}
-        component={WorkedHoursStack}
+        name={STACK_NAMES.DailySummaryStack}
+        component={DailySummaryStack}
         options={navConfig}
       />
     </Tab.Navigator>
