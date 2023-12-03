@@ -1,4 +1,4 @@
 export const FIREBASE_CONSTANTS = {
-  USERS_COLLECTION: 'users',
+  USERS_COLLECTION: 'Users',
   USER_ID: 'userId1',
 };

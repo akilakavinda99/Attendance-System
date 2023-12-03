@@ -2,15 +2,145 @@ import firestore from '@react-native-firebase/firestore';
 import {GetUserDataType} from './firebaseTypes';
 import {FIREBASE_CONSTANTS} from './firebaseConstants';
 import {errorToast} from '../utils/toastMessages';
-
-export const getUserData = async (documentId: GetUserDataType) => {
+import {isToday} from 'date-fns';
+export const getUserData = async (documentId: string) => {
   try {
     const user = await firestore()
       .collection(FIREBASE_CONSTANTS.USERS_COLLECTION)
-      .doc(documentId.userId)
+      .doc(documentId)
       .get();
     return user.data();
   } catch (error) {
     errorToast('Error in fetching user data');
   }
 };
+
+export const userCheckIn = async (documentId: string) => {
+  const today = new Date();
+  const userRef = firestore()
+    .collection(FIREBASE_CONSTANTS.USERS_COLLECTION)
+    .doc(FIREBASE_CONSTANTS.USER_ID);
+  const todayDateString = today.toISOString().split('T')[0];
+  console.log('todayDateString', todayDateString);
+  const userData = await getUserData(documentId);
+  console.log('userData', userData);
+  const attendances = userData.attendances || [];
+  console.log('attendances', attendances);
+  const todayAttendanceIndex = attendances.findIndex(entry => {
+    const entryDate = entry.date.toDate(); // Convert Firestore Timestamp to JavaScript Date
+    return isToday(entryDate); // Check if the entry date is today
+  });
+  if (todayAttendanceIndex !== -1) {
+    // If there's an entry for today, update the attendanceList
+    const updatedAttendanceList = [
+      ...attendances[todayAttendanceIndex].attendanceList,
+      {
+        checkIn: today,
+        checkOut: null,
+      },
+    ];
+
+    attendances[todayAttendanceIndex].attendanceList = updatedAttendanceList;
+  } else {
+    // If there's no entry for today, create a new one
+    attendances.push({
+      date: today,
+      attendanceList: [
+        {
+          checkIn: today,
+          checkOut: null,
+        },
+      ],
+    });
+  }
+
+  await userRef.update({
+    isCheckedIn: true, // Update your isCheckedIn field if needed
+    attendances: attendances,
+  });
+
+  console.log('todayAttendanceIndex', todayAttendanceIndex);
+};
+
+export const userCheckOut = async (documentId: string) => {
+  const today = new Date();
+  const userRef = firestore()
+    .collection(FIREBASE_CONSTANTS.USERS_COLLECTION)
+    .doc(documentId);
+
+  try {
+    const userData = await getUserData(documentId);
+    const attendances = userData.attendances || [];
+
+    const todayAttendanceIndex = attendances.findIndex(entry => {
+      const entryDate = entry.date.toDate(); // Convert Firestore Timestamp to JavaScript Date
+      return isToday(entryDate); // Check if the entry date is today
+    });
+
+    if (todayAttendanceIndex !== -1) {
+      const lastAttendance =
+        attendances[todayAttendanceIndex].attendanceList.slice(-1)[0];
+
+      if (lastAttendance && !lastAttendance.checkOut) {
+        const checkInTime = lastAttendance.checkIn.toDate();
+        const checkOutTime = today;
+
+        const timeDifference = Math.abs(checkOutTime - checkInTime);
+        const minutesDifference = Math.floor(timeDifference / (1000 * 60)); // Difference in minutes
+
+        if (minutesDifference >= 1) {
+          // If check-out is at least 1 minute after check-in, proceed with checkout
+          lastAttendance.checkOut = checkOutTime;
+          await userRef.update({
+            isCheckedIn: false,
+            attendances: attendances,
+          });
+          console.log('User checked out successfully!');
+        } else {
+          console.log(
+            'Check-out time must be at least 1 minute after check-in.',
+          );
+          errorToast(
+            'Check-out time must be at least 1 minute after check-in.',
+          );
+          // Handle the case where check-out time is not within the allowed range
+        }
+      } else {
+        console.log('No ongoing check-in found for today.');
+        // Handle the case where there's no ongoing check-in for today
+      }
+    } else {
+      console.log('No check-in found for today.');
+      // Handle the case where there's no check-in for today
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+// const checkIn = () => {
+//   firestore()
+//     .collection('Users')
+//     .doc(FIREBASE_CONSTANTS.USER_ID)
+//     .set({
+//       name: 'John Doe',
+//       isCheckedIn: false,
+//       attendances: [
+//         {
+//           date: new Date(),
+//           attendanceList: [
+//             {
+//               checkIn: new Date(),
+//               checkOut: null,
+//             },
+//           ],
+//         },
+//       ],
+//     })
+//     .then(() => {
+//       console.log('User added!');
+//     })
+//     .catch(err => {
+//       console.log('Error', err);
+//     });
+// };
