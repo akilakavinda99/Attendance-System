@@ -7,4 +7,14 @@ export const theme = {
     buttonColor: '#F6452B',
     // Add more color definitions as needed
   },
+
+  fontSizes: {
+    small: 12,
+    medium: 16,
+    large: 20,
+    // Add more font size definitions as needed
+  },
+  gradientColors: {
+    dayGradient: ['#78D2F6', '#8ED6F4', '#61BCFF'],
+  },
 };

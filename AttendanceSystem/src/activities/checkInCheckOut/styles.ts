@@ -1,16 +1,21 @@
 import {StyleSheet} from 'react-native';
 import {theme} from '../../theme/theme';
+import {scale} from 'react-native-size-matters';
 
 export const checkInCheckOutStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
-    padding: 30,
+    padding: scale(30),
   },
   title: {
-    fontSize: 20,
+    fontSize: scale(theme.fontSizes.large),
     fontWeight: 'bold',
-    marginTop: 20,
+    marginTop: scale(20),
     color: theme.colors.black,
+  },
+  secondaryView: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
